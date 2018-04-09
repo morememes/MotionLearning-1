@@ -15,4 +15,4 @@ GUI interface for processing video.
 - opencv-python
 - imutils
 - librosa
-- ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `#1589F0` os, subprocess, shutil, time, sys (standart modules)
+- os, subprocess, shutil, time, sys (<span style="color:red;">standart modules</span>)
