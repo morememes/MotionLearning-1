@@ -15,4 +15,4 @@ GUI interface for processing video.
 - opencv-python
 - imutils
 - librosa
-- os, subprocess, shutil, time, sys (<span style="color:red;">standart modules</span>)
+- os, subprocess, shutil, time, sys (<span style="color:Red;">standart modules</span>)
