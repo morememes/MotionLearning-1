@@ -1,8 +1,6 @@
 # MotionLearning
 GUI interface for processing video.
 
-Current Version: 0.2
-
 
 # Some Facts
 - This program works correctly only with .mp4 files.
@@ -20,6 +18,6 @@ Current Version: 0.2
 
 
 # Updates
-Ver 0.2
+Ver 0.1.1
 - Adding a possibility of changing audio changer level.
 - In 'setting' you can use both effects from different columns at the same time.
