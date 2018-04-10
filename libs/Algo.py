@@ -24,6 +24,8 @@ def MLConv(self, GUI):
         GUI.currentFileName + GUI.preFile, 'temp\\TempAudio.wav'), creationflags=0x08000000,
         shell=True)  # Извлечение звуковой дорожки
     
+    GUI.settings.setEnabled(False)
+
     if GUI.settings.ui.radioButton_14.isChecked():
         GUI.ath.start()
 
@@ -35,8 +37,8 @@ def MLConv(self, GUI):
     size = width, heigth
     fps = float(cap.get(5))  # получаем fps видео
 
-    mode = 0  # Установка дефолтного (GrayScale) мода обработки фреймов
-    mode = setFlag(GUI)  # Извлечение мода обработки фреймов из radioButtons
+    modeF = setFlagF(GUI)  # Извлечение мода обработки фреймов из radioButtons
+    modeS = setFlagS(GUI)
 
     vid = cv2.VideoWriter('temp\\temp_' + GUI.doneFile, fourcc, fps, size, 1)  # задаем параметры записи кадра
     self.StatusBarSignal.emit('Converting...')
@@ -58,7 +60,7 @@ def MLConv(self, GUI):
         _, frame = cap.retrieve() # достаем кадр
 
         if abs(i - mid) <= brd:
-            doneFrame = ConvPilot(frame, mode)  # конвертируем кадр
+            doneFrame = ConvPilot(frame, modeF, modeS)  # конвертируем кадр
             vid.write(doneFrame)  # Запись обработанного кадра
         else:
             vid.write(frame)
@@ -80,14 +82,16 @@ def MLConv(self, GUI):
                     creationflags=0x08000000, shell=True)  # Наложение звуковой дорожки на основное видео
     shutil.rmtree('temp')  # Удаление папки temp
     self.StatusBarSignal.emit('Complited!')
+    GUI.settings.setEnabled(True)
 
 
 def AudioConv(self, GUI):
     self.isRun = True
     y, sr = librosa.load("temp\\TempAudio.wav", sr=None, mono=False)
     y1, y2 = y[0], y[1]
-    y_shifted1 = librosa.effects.pitch_shift(y1, sr, n_steps=-0.1) # shifted by -0.1 half steps
-    y_shifted2 = librosa.effects.pitch_shift(y2, sr, n_steps=-0.1) # shifted by -0.1 half steps
+    shift = GUI.settings.ui.spinBox.value()
+    y_shifted1 = librosa.effects.pitch_shift(y1, sr, n_steps=shift) # shifted by -0.1 half steps
+    y_shifted2 = librosa.effects.pitch_shift(y2, sr, n_steps=shift) # shifted by -0.1 half steps
     new = np.array([y_shifted1, y_shifted2])
     librosa.output.write_wav('temp\\TempAudio.wav', new, sr)
     self.isRun = False
